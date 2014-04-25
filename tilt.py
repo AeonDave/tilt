@@ -19,7 +19,7 @@ def header():
 
 def showhelp():
     print """
-    Usage: python tilt.py [Target] [options]
+    Usage: python tilt.py [Target] [Options]
 
     Target:
         -t target        Target URL (e.g. "www.site.com")
@@ -30,7 +30,7 @@ def showhelp():
         -g, --google              Perform a search on google(not working)
 
     Example:
-        python tilt.py -t google.com
+        python tilt.py -t google.com -r
         python tilt.py -t 8.8.8.8
     """
     
