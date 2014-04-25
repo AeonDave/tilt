@@ -23,7 +23,7 @@ Tilt: Terminal Ip Lookup Tool
         -g            Perform a search on google(not working)
 
     Example:
-        python tilt.py -t google.com
+        python tilt.py -t google.com -r
         python tilt.py -t 8.8.8.8
         
 New features will be added in future
