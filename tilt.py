@@ -28,10 +28,12 @@ def showhelp():
         -v, --version             Show program's version number
         -r, --reverse             Perform e reverse ip lookup
         -g, --google              Perform a search on google(not working)
+        -u, --update              Update program from repository(not working)
 
     Example:
         python tilt.py -t google.com -r
         python tilt.py -t 8.8.8.8
+        python tilt.py -u
     """
     
 # Functions
@@ -117,13 +119,15 @@ def get_reversed_ip_hosts(value):
         
         
         return sorted(domains)
-
-                        
-         
+    
+def update():                       
+        print "[*] Updating Client\n"
+        print "[+] Updated!"
+        sys.exit(0)
 # Tilt Startup
 
 try:
-    options, args = getopt.getopt(sys.argv[1:], 't:rgvh', ['target=', 'reverse', 'google', 'version', 'help'])
+    options, args = getopt.getopt(sys.argv[1:], 't:rgvhu', ['target=', 'reverse', 'google', 'version', 'help', 'update'])
 except getopt.GetoptError:
     showhelp()
     sys.exit(1)
@@ -135,10 +139,14 @@ google=False
 for opt, arg in options:
     if opt in ('-h', '--help'):
         showhelp()
-        sys.exit(2)
+        sys.exit(0)
     elif opt in ('-v', '--version'):
         header()
-        sys.exit(2)
+        sys.exit(0)
+    elif opt in ('-u', '--update'):
+        header()
+        update()
+        sys.exit(0)
     elif opt in ('-t', '--target'):
         target = arg
     elif opt in ('-r', '--reverse'):
