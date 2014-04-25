@@ -21,10 +21,12 @@ Tilt: Terminal Ip Lookup Tool
         -v, --version             Show program's version number
         -r, --reverse             Perform e reverse ip lookup
         -g, --google              Perform a search on google(not working)
+        -u, --update              Update program from repository
 
     Example:
         python tilt.py -t google.com -r
         python tilt.py -t 8.8.8.8
+        python tilt.py -u
         
 New features will be added in future
 
