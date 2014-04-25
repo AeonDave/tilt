@@ -12,15 +12,15 @@ Tilt: Terminal Ip Lookup Tool
  Tilt: Terminal ip lookup tool, is a easy and simple tool implemented in Python for ip reconnaissance, with reverse ip lookup.
  
  
- Usage: python tilt.py [Target] [options]
+    Usage: python tilt.py [Target] [Options]
 
     Target:
         -t target        Target URL (e.g. "www.site.com")
     Options:
-        -h, --help        Show basic help message
-        -v, --version        Show program's version number
-        -r            Perform e reverse ip lookup
-        -g            Perform a search on google(not working)
+        -h, --help                Show basic help message
+        -v, --version             Show program's version number
+        -r, --reverse             Perform e reverse ip lookup
+        -g, --google              Perform a search on google(not working)
 
     Example:
         python tilt.py -t google.com -r
