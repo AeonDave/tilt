@@ -27,3 +27,5 @@ Tilt: Terminal Ip Lookup Tool
         python tilt.py -t 8.8.8.8
         
 New features will be added in future
+
+Follow the project on: https://github.com/AeonDave/tilt
