@@ -2,7 +2,7 @@
 
 import sys, getopt, socket, re, os, json, urllib2
 
-__version__ = "1.1"
+__version__ = "1.0"
 __author__ = "AeonDave"
 
 
@@ -24,10 +24,10 @@ def showhelp():
     Target:
         -t target        Target URL (e.g. "www.site.com")
     Options:
-        -h, --help        Show basic help message
-        -v, --version        Show program's version number
-        -r            Perform e reverse ip lookup
-        -g            Perform a search on google(not working)
+        -h, --help                Show basic help message
+        -v, --version             Show program's version number
+        -r, --reverse             Perform e reverse ip lookup
+        -g, --google              Perform a search on google(not working)
 
     Example:
         python tilt.py -t google.com
