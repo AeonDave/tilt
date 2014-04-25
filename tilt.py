@@ -55,14 +55,16 @@ def get_host_by_ip(value):
         ip = socket.gethostbyaddr(value)
         return ip
     except socket.gaierror, err:
-        return "[-] ERROR: Cannot resolve ip: ", value, err
+        print "[-] ERROR: Cannot resolve ip: ", value, err
+        sys.exit(1) 
 
 def get_host_by_name(value):
     try:
         host = socket.gethostbyname_ex(value)
         return host
     except socket.gaierror, err:
-        return "[-] ERROR: Cannot resolve hostname: ", value, err
+        print "[-] ERROR: Cannot resolve hostname: ", value, err
+        sys.exit(1) 
 
 def get_ip(value):
     try:
