@@ -4,7 +4,9 @@ Tilt
 
 
  =========================================== 
+
 |         Terminal Ip Lookup Tool           |
+
  =========================================== 
  
  A simple tool for reverse an ip and find dns connected to it
