@@ -2,7 +2,7 @@
 
 import sys, getopt, socket, re, os, json, urllib2
 
-__version__ = "1.0"
+__version__ = "1.1"
 __author__ = "AeonDave"
 
 
@@ -73,29 +73,50 @@ def get_ip(value):
     except:
         return None
 
+def get_data_from_url(value):
+    
+    req = urllib2.Request(value)
+    req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:28.0) Gecko/20100101 Firefox/28.0')
+    req.add_header('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')
+    req.add_header('Connection', 'keep-alive')
+    
+    try:
+        rawdata = json.load(urllib2.urlopen(req))
+        return rawdata
+    except urllib2.HTTPError, e:
+        print e.fp.read()
+        sys.exit(2)
 
 def get_reversed_ip_hosts(value):
+    
         url = 'http://domains.yougetsignal.com/domains.php?remoteAddress=' + value
-        req = urllib2.Request(url)
-        req.add_header('Referer', 'http://www.yougetsignal.com/tools/web-sites-on-web-server/')
-        req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:28.0) Gecko/20100101 Firefox/28.0')
-        req.add_header('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')
-        req.add_header('Connection', 'keep-alive')
-        try:
-            rawdata = urllib2.urlopen(req)
-        except urllib2.HTTPError, e:
-            return e.fp.read()
-        data = json.load(rawdata)
+        url2 = 'http://reverseip.logontube.com/?url=' + value + '&output=json'
+        
+        data = get_data_from_url(url)
+        data2 = get_data_from_url(url2)
+        
         domain = (data['domainArray'])
-        ip = (data['remoteIpAddress'])
+        domain2 = (data2['response']['domains'])
+        
+        ip = get_ip(value)
         domains=[]
+        
         for site in domain:
             for host in site:
                 if host != '':
-                    result= get_ip(host)
+                    result = get_ip(host)
                     if result==ip or result==None:
                         domains.append(host)
-        return domains
+                        
+        for site2 in domain2:
+            if site2 not in domains:
+                result = get_ip(site2)
+                if result==ip or result==None:
+                    domains.append(site2)
+        
+        
+        
+        return sorted(domains)
 
                         
          
