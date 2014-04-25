@@ -20,7 +20,7 @@ Tilt: Terminal Ip Lookup Tool
         -h, --help                Show basic help message
         -v, --version             Show program's version number
         -r, --reverse             Perform e reverse ip lookup
-        -g, --google              Perform a search on google(not working)
+        -g, --google              Perform a search on google
         -u, --update              Update program from repository
 
     Example:
