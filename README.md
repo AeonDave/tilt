@@ -1,4 +1,4 @@
-Tilt
+Tilt: Terminal Ip Lookup Tool
 ====
 
 
@@ -9,7 +9,7 @@ Tilt
 
  =========================================== 
  
- A simple tool for reverse an ip and find dns connected to it
+ Tilt: Terminal ip lookup tool, is a easy and simple tool implemented in Python for ip reconnaissance, with reverse ip lookup.
  
  
  Usage: python tilt.py [Target] [options]
