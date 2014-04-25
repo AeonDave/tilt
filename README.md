@@ -11,7 +11,7 @@ Tilt: Terminal Ip Lookup Tool
                                                   ██║   ██║███████╗██║   
                                                   ╚═╝   ╚═╝╚══════╝╚═╝ 
 
- ====
+ ======================================================================================================================
  
  Tilt: Terminal ip lookup tool, is a easy and simple tool implemented in Python for ip reconnaissance, with reverse ip lookup.
  
