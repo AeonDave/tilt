@@ -132,7 +132,7 @@ def update():
             print "[-] Not a git repository. Please checkout the repository from GitHub (e.g. git clone https://github.com/AeonDave/tilt.git)"
         else:
             print "[*] Updating Tilt from latest version from the GitHub Repository\n" 
-            Popen("git reset --hard HEAD", shell=True, stdout=PIPE, stderr=PIPE)
+            Popen("git reset --hard", shell=True, stdout=PIPE, stderr=PIPE)
             process = Popen("git pull", shell=True, stdout=PIPE, stderr=PIPE)
             Popen("chmod +x ./tilt.py", shell=True, stdout=PIPE, stderr=PIPE)
             process.communicate()
