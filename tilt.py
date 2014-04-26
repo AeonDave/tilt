@@ -132,7 +132,8 @@ def update():
             print "[-] Not a git repository. Please checkout the repository from GitHub (e.g. git clone https://github.com/AeonDave/tilt.git)"
         else:
             print "[*] Updating Tilt from latest version from the GitHub Repository\n" 
-
+            Popen("git stash", shell=True, stdout=PIPE, stderr=PIPE)
+            Popen("git stash drop", shell=True, stdout=PIPE, stderr=PIPE)
             process = Popen("git pull origin master", shell=True, stdout=PIPE, stderr=PIPE)
             Popen("chmod +x ROOTDIR/tilt.py", shell=True, stdout=PIPE, stderr=PIPE)
             process.communicate()
