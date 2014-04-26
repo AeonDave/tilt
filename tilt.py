@@ -35,7 +35,7 @@ def showhelp():
         -v, --version             Show program's version number
         -r, --reverse             Perform e reverse ip lookup
         -g, --google              Perform a search on google(not working)
-        -u, --update              Update program from repository(not working)
+        -u, --update              Update program from repository
 
     Example:
         python tilt.py -t google.com -r
