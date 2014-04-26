@@ -134,6 +134,7 @@ def update():
             print "[*] Updating Tilt from latest version from the GitHub Repository\n" 
             Popen("git reset --hard HEAD", shell=True, stdout=PIPE, stderr=PIPE)
             process = Popen("git pull", shell=True, stdout=PIPE, stderr=PIPE)
+            Popen("chmod +x ./tilt.py", shell=True, stdout=PIPE, stderr=PIPE)
             process.communicate()
             success = not process.returncode
             if success:
