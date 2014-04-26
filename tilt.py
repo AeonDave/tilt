@@ -138,9 +138,9 @@ def update():
             process.communicate()
             success = not process.returncode
             if success:
-                print "[+] Updated!"
+                print "[+] Updated!\n"
             else:
-                print "[-] Error!"   
+                print "[-] Error!\n"   
            
         sys.exit(0)
         
