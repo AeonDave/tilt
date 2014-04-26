@@ -2,8 +2,15 @@
 
 import sys, getopt, socket, re, os, json, urllib2
 
-__version__ = "1.1"
-__author__ = "AeonDave"
+from subprocess import PIPE
+from subprocess import Popen
+from settings import GIT_REPOSITORY
+from settings import VERSION
+from settings import AUTHOR
+from settings import ROOTDIR
+
+__version__ = VERSION
+__author__ = AUTHOR
 
 
 # Functions Header / Help
@@ -121,9 +128,23 @@ def get_reversed_ip_hosts(value):
         return sorted(domains)
     
 def update():                       
-        print "[*] Updating Client\n"
-        print "[+] Updated!"
+        if not os.path.exists(os.path.join(ROOTDIR, ".git")):
+            print "[-] Not a git repository. Please checkout the repository from GitHub (e.g. git clone https://github.com/AeonDave/tilt.git)"
+        else:
+            print "[*] Updating Tilt from latest version from the GitHub Repository\n" 
+            print "git pull " + GIT_REPOSITORY
+            process = Popen("git pull " + GIT_REPOSITORY, shell=True, stdout=PIPE, stderr=PIPE)
+            process.communicate()
+            success = not process.returncode
+            if success:
+                print "[+] Updated!"
+            else:
+                print "[-] Error!"   
+           
         sys.exit(0)
+        
+        
+        
 # Tilt Startup
 
 try:
