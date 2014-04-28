@@ -83,7 +83,7 @@ def main():
     if google:
         logger.info('[*]Search on '+target)
         actions.search(target)
-    logger.info('-----End-----')
+    logger.info('-----End-----\n')
 # Program
 
 if __name__ == '__main__':
