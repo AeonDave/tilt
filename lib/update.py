@@ -21,6 +21,7 @@ def update():
         Popen("git stash", shell=True, stdout=PIPE, stderr=PIPE)
         Popen("git stash drop", shell=True, stdout=PIPE, stderr=PIPE)
         process = Popen("git pull origin master", shell=True, stdout=PIPE, stderr=PIPE)
+        Popen("chmod +x ./tilt.py", shell=True, stdout=PIPE, stderr=PIPE)
         process.communicate()
         success = not process.returncode
                 
