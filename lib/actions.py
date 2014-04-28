@@ -17,7 +17,7 @@ def header():
     
     print ""
     print "         =========================================== "
-    print "        |  Terminal Ip Lookup Tool v{0}: TILT\t    |".format(__version__)
+    print "        |  Terminal Ip Lookup Tool v{0}: TILT\t|".format(__version__)
     print "        |  by {0}\t\t\t\t    |".format(__author__)
     print "         =========================================== "
     print ""
