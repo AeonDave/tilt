@@ -1,225 +1,92 @@
 #!/usr/bin/python
 
-import sys, getopt, socket, re, os, json, urllib2
+"""
+Copyright (c) 2014 tilt (https://github.com/AeonDave/tilt)
+See the file 'LICENSE' for copying permission
+"""
 
-from subprocess import PIPE
-from subprocess import Popen
-from settings import GIT_REPOSITORY
-from settings import VERSION
-from settings import AUTHOR
-from settings import ROOTDIR
+import sys, getopt, logging
 
-__version__ = VERSION
-__author__ = AUTHOR
+from lib import update
+from lib import actions
+from lib.logger import logger
 
-
-# Functions Header / Help
-def header():
-    os.system("clear")
-    
-    print ""
-    print "         =========================================== "
-    print "        |  Terminal Ip Lookup Tool v{0}: TILT\t    |".format(__version__)
-    print "        |  by {0}\t\t\t\t    |".format(__author__)
-    print "         =========================================== "
-    print ""
-
-def showhelp():
-    print """
-    Usage: python tilt.py [Target] [Options]
-
-    Target:
-        -t target        Target URL (e.g. "www.site.com")
-    Options:
-        -h, --help                Show basic help message
-        -v, --version             Show program's version number
-        -r, --reverse             Perform e reverse ip lookup
-        -g, --google              Perform a search on google(not working)
-        -u, --update              Update program from repository
-
-    Example:
-        python tilt.py -t google.com -r
-        python tilt.py -t 8.8.8.8
-        python tilt.py -u
-    """
-    
-# Functions
-
-def is_valid_ip(ip):
-    is_valid = re.match("^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$", ip)
-    if is_valid:
-        return True
-    else:
-        return False
-
-def is_valid_hostname(hostname):
-    is_valid = re.match("^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$", hostname)
-    if is_valid:
-        return True
-    else:
-        return False
-
-def get_host_by_ip(value):
-    try:
-        ip = socket.gethostbyaddr(value)
-        return ip
-    except socket.gaierror, err:
-        print "[-] ERROR: Cannot resolve ip: ", value, err
-        sys.exit(1) 
-
-def get_host_by_name(value):
-    try:
-        host = socket.gethostbyname_ex(value)
-        return host
-    except socket.gaierror, err:
-        print "[-] ERROR: Cannot resolve hostname: ", value, err
-        sys.exit(1) 
-
-def get_ip(value):
-    try:
-        host = socket.gethostbyname(value)
-        return host
-    except:
-        return None
-
-def get_data_from_url(value):
-    
-    req = urllib2.Request(value)
-    req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:28.0) Gecko/20100101 Firefox/28.0')
-    req.add_header('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')
-    req.add_header('Connection', 'keep-alive')
-    
-    try:
-        rawdata = json.load(urllib2.urlopen(req))
-        return rawdata
-    except urllib2.HTTPError, e:
-        print e.fp.read()
-        sys.exit(2)
-
-def get_reversed_ip_hosts(value):
-    
-        url = 'http://domains.yougetsignal.com/domains.php?remoteAddress=' + value
-        url2 = 'http://reverseip.logontube.com/?url=' + value + '&output=json'
         
-        data = get_data_from_url(url)
-        data2 = get_data_from_url(url2)
-        
-        domain = (data['domainArray'])
-        domain2 = (data2['response']['domains'])
-        
-        ip = get_ip(value)
-        domains=[]
-        
-        for site in domain:
-            for host in site:
-                if host != '':
-                    result = get_ip(host)
-                    if result==ip or result==None:
-                        domains.append(host)
-                        
-        for site2 in domain2:
-            if site2 not in domains:
-                result = get_ip(site2)
-                if result==ip or result==None:
-                    domains.append(site2)
-        
-        
-        
-        return sorted(domains)
-    
-def update():                       
-        if not os.path.exists(os.path.join(ROOTDIR, ".git")):
-            print "[-] Not a git repository. Please checkout the repository from GitHub (e.g. git clone https://github.com/AeonDave/tilt.git)"
-        else:
-            print "[*] Updating Tilt from latest version from the GitHub Repository\n" 
-            Popen("git stash", shell=True, stdout=PIPE, stderr=PIPE)
-            Popen("git stash drop", shell=True, stdout=PIPE, stderr=PIPE)
-            process = Popen("git pull origin master", shell=True, stdout=PIPE, stderr=PIPE)
-            Popen("chmod +x ROOTDIR/tilt.py", shell=True, stdout=PIPE, stderr=PIPE)
-            process.communicate()
-            success = not process.returncode
-            
-            if success:
-                print "[+] Updated!\n"
-            else:
-                print "[-] Error!\n"   
-           
-        sys.exit(0)
-        
-        
-        
-# Tilt Startup
+# Tilt Setup
 
 try:
-    options, args = getopt.getopt(sys.argv[1:], 't:rgvhu', ['target=', 'reverse', 'google', 'version', 'help', 'update'])
+    options, args = getopt.getopt(sys.argv[1:], 't:rgvhueo:', ['target=', 'reverse', 'google', 'version', 'help', 'update', 'extensive', 'output'])
 except getopt.GetoptError:
-    showhelp()
+    actions.showhelp()
     sys.exit(1)
 
 target=None
 reverse=False
 google=False
+extensive=False
+output=None
 
 for opt, arg in options:
     if opt in ('-h', '--help'):
-        showhelp()
+        actions.showhelp()
         sys.exit(0)
     elif opt in ('-v', '--version'):
-        header()
+        actions.header()
         sys.exit(0)
     elif opt in ('-u', '--update'):
-        header()
-        update()
+        actions.header()
+        update.update()
         sys.exit(0)
     elif opt in ('-t', '--target'):
         target = arg
     elif opt in ('-r', '--reverse'):
         reverse = True
+    elif opt in ('-e', '--extensive'):
+        extensive = True
     elif opt in ('-g', '--google'):
         google = True
+    elif opt in ('-o', '--output'):
+        output = arg
     else:
-        header()
-        showhelp()
+        actions.header()
+        actions.showhelp()
         sys.exit(1)
 
 if not target:
-    header()
-    showhelp()
-    print "[-] ERROR: You must provide a target.\n"
+    actions.header()
+    actions.showhelp()
+    msg = "[-] ERROR: You must provide a target."
+    logger.error(msg)
     sys.exit(1) 
 
+if google and reverse:
+    msg = "[-] Cannot do reverse ip lookup and google search togheter!"
+    logger.error(msg)
+    sys.exit(1) 
 
+def main():
+    if not output==None:     
+        handler = logging.FileHandler(output)
+        handler.setLevel(logging.INFO)
+        logger.addHandler(handler)
+    logger.info('-----Start-----')
+    if not target==None:
+        if extensive:
+            logger.info('[*]Extensive ip lookup on '+target)
+            actions.host_extensive_inspect(target)
+        else:
+            logger.info('[*]Ip lookup on '+target)
+            actions.host_inspect(target)
+    if reverse:
+        logger.info('[*]Reverse ip lookup on '+target)
+        actions.reverse(target)
+    if google:
+        logger.info('[*]Search on '+target)
+        actions.search(target)
+    logger.info('-----End-----')
 # Program
 
 if __name__ == '__main__':
-    header()
-
-if is_valid_ip(target):
-    print "[+] Valid ip"
-    print "[*] Performing hostname conversion \n"
-    try:
-        print get_host_by_ip(target), "\n"
-    except:
-        print "[-] ERROR: Cannot resolve hostname"
-        
-elif is_valid_hostname(target):
-    print "[+] Valid host"
-    print "[*] Performing ip conversion \n"
-    print get_host_by_name(target), "\n"
-    
-else:
-    print "[-] ERROR: You must provide a valid target. Given: ", target
-    showhelp()
-    sys.exit(1) 
-
-if reverse:
-    print "[*] Performing reverse ip lookup \n"
-    hosts = get_reversed_ip_hosts(target)
-    if len(hosts)>0:
-        print "[+] "+str(len(hosts))+" Domains found \n"
-        for host in hosts:
-            print host
-    else:
-        print "[-] No Domains found \n"
-        
-sys.exit(0) 
+    actions.header()
+    main()
+    sys.exit(0)
