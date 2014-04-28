@@ -18,8 +18,7 @@ def update():
     else:
         msg = "[*] Updating Tilt from latest version from the GitHub Repository\n" 
         logger.info(msg)
-        Popen("git stash", shell=True, stdout=PIPE, stderr=PIPE)
-        Popen("git stash drop", shell=True, stdout=PIPE, stderr=PIPE)
+
         process = Popen("git pull origin master", shell=True, stdout=PIPE, stderr=PIPE)
         Popen("chmod +x ./tilt.py", shell=True, stdout=PIPE, stderr=PIPE)
         process.communicate()
