@@ -72,16 +72,16 @@ def main():
     logger.info('-----Start-----')
     if not target==None:
         if extensive:
-            logger.info('[*]Extensive ip lookup on '+target)
+            logger.info('[*] Extensive ip lookup on '+target)
             actions.host_extensive_inspect(target)
         else:
-            logger.info('[*]Ip lookup on '+target)
+            logger.info('[*] Ip lookup on '+target)
             actions.host_inspect(target)
     if reverse:
-        logger.info('[*]Reverse ip lookup on '+target)
+        logger.info('[*] Reverse ip lookup on '+target)
         actions.reverse(target)
     if google:
-        logger.info('[*]Search on '+target)
+        logger.info('[*] Search on '+target)
         actions.search(target)
     logger.info('-----End-----\n')
 # Program
