@@ -48,9 +48,7 @@ def get_reverse_from_logontube(value):
     domain = (data['response']['domains'])
     if not core.get_ip(value) == False:
         ip = core.get_ip(value)
-        
         domains=[]
-    
         for site in domain:
             if site != '':
                 result = core.get_ip(site)
