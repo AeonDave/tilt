@@ -5,13 +5,17 @@ Copyright (c) 2014 tilt (https://github.com/AeonDave/tilt)
 See the file 'LICENSE' for copying permission
 """
 
-import sys, getopt, logging, os
+import sys, getopt, logging
 
 from lib import update
 from lib import actions
 from lib.logger import logger
+from lib.settings import ROOTDIR
+from lib.settings import LIBDIR
      
 # Tilt Setup
+sys.path.insert(0, ROOTDIR)
+sys.path.insert(0, LIBDIR)
 
 try:
     options, args = getopt.getopt(sys.argv[1:], 't:ragvhueo:', ['target=', 'reverse', 'google', 'version', 'help', 'update', 'extensive', 'output'])
