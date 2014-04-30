@@ -10,12 +10,8 @@ import sys, getopt, logging
 from lib import update
 from lib import actions
 from lib.logger import logger
-from lib.settings import ROOTDIR
-from lib.settings import LIBDIR
      
 # Tilt Setup
-sys.path.insert(0, ROOTDIR)
-sys.path.insert(0, LIBDIR)
 
 try:
     options, args = getopt.getopt(sys.argv[1:], 't:ragvhueo:', ['target=', 'reverse', 'google', 'version', 'help', 'update', 'extensive', 'output'])

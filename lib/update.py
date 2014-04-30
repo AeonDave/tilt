@@ -9,8 +9,8 @@ import sys, os
 from lib.logger import logger
 from subprocess import PIPE
 from subprocess import Popen
-from settings import ROOTDIR
-from settings import PLATFORM
+from lib.settings import ROOTDIR
+from lib.settings import PLATFORM
 
 def update():
     if not os.path.exists(os.path.join(ROOTDIR, ".git")):
