@@ -32,5 +32,3 @@ def update():
             msg = "[-] Error!\n" 
             logger.error(msg)
             sys.exit(1)  
-               
-    
