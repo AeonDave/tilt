@@ -54,8 +54,7 @@ def host_inspect(target):
         logger.info(msg)
         try:
             value = core.get_host_by_ip(target)
-            msg = util.list_to_string(value)
-            logger.info(msg)
+            util.list_to_string(value)
         except:
             msg = "[-] ERROR: Cannot resolve hostname"
             logger.error(msg)
@@ -67,8 +66,7 @@ def host_inspect(target):
         logger.info(msg)
         try:
             value = core.get_host_by_name(target)
-            msg = util.list_to_string(value)
-            logger.info(msg)
+            util.list_to_string(value)
         except:
             msg = "[-] ERROR: Cannot resolve hostname"
             logger.error(msg)
@@ -88,8 +86,7 @@ def host_extensive_inspect(target):
         logger.info(msg)
         try:
             value = core.get_host_by_ip(target)
-            msg = util.list_to_string(value)
-            logger.info(msg)
+            util.list_to_string(value)
         except:
             msg = "[-] ERROR: Cannot resolve hostname"
             logger.error(msg)
@@ -101,8 +98,7 @@ def host_extensive_inspect(target):
         logger.info(msg)
         try:
             value = core.get_host_by_name(target)
-            msg = util.list_to_string(value)
-            logger.info(msg)
+            util.list_to_string(value)
         except:
             msg = "[-] ERROR: Cannot resolve hostname"
             logger.error(msg)
@@ -117,10 +113,16 @@ def reverse(target, extensive):
     logger.info(msg)
     hosts = core.get_reversed_hosts(target, extensive)
     if len(hosts)>0:
-        msg = "[+] "+str(len(hosts))+" Domains found"
-        logger.info(msg)
-        for host in hosts:
-            logger.info(host)
+        if len(hosts)==1:
+            msg = "[+] "+str(len(hosts))+" Domain found"
+            logger.info(msg)
+            for host in hosts:
+                logger.info(host)
+        else:
+            msg = "[+] "+str(len(hosts))+" Domains found"
+            logger.info(msg)
+            for host in hosts:
+                logger.info(host)
     else:
         msg = "[-] No Domains found"
         logger.error(msg)

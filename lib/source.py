@@ -26,20 +26,23 @@ def get_json_from_url(value):
 def get_reverse_from_yougetsignal(value, extensive):
     url = 'http://domains.yougetsignal.com/domains.php?remoteAddress=' + value
     data = get_json_from_url(url)
-    domain = (data['domainArray'])
-    if not core.get_ip(value) == False:
-        
-        ip = core.get_ip(value)
-        domains=[]
+    status = (data['status'])
+    domains=[]
+    if status=='Success':
+        domain = (data['domainArray'])
+        if not core.get_ip(value) == False:
             
-        for value in domain:
-            for site in value:
-                if site != '':
-                    result = core.get_ip(site)
-                    if not extensive and result==ip or result==None:
-                        domains.append(site)
-                    elif extensive:
-                        domains.append(site)
+            ip = core.get_ip(value)
+            
+            for value in domain:
+                for site in value:
+                    if site != '':
+                        if not extensive:
+                            result = core.get_ip(site)
+                            if result==ip or result==None:
+                                domains.append(site)
+                        elif extensive:
+                            domains.append(site)
         return domains
     else:
         return False
@@ -48,17 +51,16 @@ def get_reverse_from_logontube(value, extensive):
     url = 'http://reverseip.logontube.com/?url=' + value + '&output=json'
     data = get_json_from_url(url)
     domain = (data['response']['domains'])
+    domains=[]
     if not core.get_ip(value) == False:
         ip = core.get_ip(value)
-        domains=[]
         for site in domain:
             if site != '':
-                result = core.get_ip(site)
-                if not extensive and result==ip or result==None:
-                    domains.append(site)
+                if not extensive:
+                    result = core.get_ip(site)
+                    if result==ip or result==None:
+                        domains.append(site)
                 elif extensive:
                     domains.append(site)
-        return domains
-    else:
-        return False
+    return domains
         
