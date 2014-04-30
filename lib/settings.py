@@ -7,7 +7,7 @@ See the file 'LICENSE' for copying permission
 
 import os ,sys 
 
-VERSION = "0.5 beta"
+VERSION = "0.5.1 beta"
 AUTHOR = "AeonDave"
 DESCRIPTION = "automatic SQL injection and database takeover tool"
 SITE = "https://github.com/AeonDave/tilt.git"
