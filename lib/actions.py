@@ -112,10 +112,10 @@ def host_extensive_inspect(target):
         showhelp()
         sys.exit(1) 
 
-def reverse(target):
+def reverse(target, extensive):
     msg = "[*] Performing reverse ip lookup"
     logger.info(msg)
-    hosts = core.get_reversed_hosts(target)
+    hosts = core.get_reversed_hosts(target, extensive)
     if len(hosts)>0:
         msg = "[+] "+str(len(hosts))+" Domains found"
         logger.info(msg)
@@ -125,6 +125,7 @@ def reverse(target):
         msg = "[-] No Domains found"
         logger.error(msg)
             
+        
 def search(value):
         msg = "[-] Not Implemented Yet"
         logger.error(msg)
