@@ -5,17 +5,16 @@ Copyright (c) 2014 tilt (https://github.com/AeonDave/tilt)
 See the file 'LICENSE' for copying permission
 """
 
-import sys, getopt, logging
+import sys, getopt, logging, os
 
 from lib import update
 from lib import actions
 from lib.logger import logger
-
-        
+     
 # Tilt Setup
 
 try:
-    options, args = getopt.getopt(sys.argv[1:], 't:rgvhueo:', ['target=', 'reverse', 'google', 'version', 'help', 'update', 'extensive', 'output'])
+    options, args = getopt.getopt(sys.argv[1:], 't:ragvhueo:', ['target=', 'reverse', 'google', 'version', 'help', 'update', 'extensive', 'output'])
 except getopt.GetoptError:
     actions.showhelp()
     sys.exit(1)
@@ -77,9 +76,14 @@ def main():
         else:
             logger.info('[*] Ip lookup on '+target)
             actions.host_inspect(target)
-    if reverse:
+    if reverse and not extensive:
         logger.info('[*] Reverse ip lookup on '+target)
-        actions.reverse(target)
+        actions.reverse(target, False)
+        
+    if reverse and extensive:
+        logger.info('[*] Extensive reverse ip lookup on '+target)
+        logger.warning('[*] This feature shows all domains pointing on same server but with different ip')
+        actions.reverse(target, True)
     if google:
         logger.info('[*] Search on '+target)
         actions.search(target)
@@ -88,5 +92,7 @@ def main():
 
 if __name__ == '__main__':
     actions.header()
+    print sys.path[0]
+    print os.path
     main()
     sys.exit(0)
