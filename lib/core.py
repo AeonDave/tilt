@@ -48,13 +48,17 @@ def get_reversed_hosts(value, extensive):
     source1 = source.get_reverse_from_yougetsignal(value, extensive)
     source2 = source.get_reverse_from_logontube(value, extensive)
     
-    if source1 and source2:
-        domains = source1 + source2
-    elif source1 and not source2:
-        domains=source1
-        logger.warning('[*] One source responded badly: Reverse ip lookup may be inaccurate')
-    elif source2 and not source1:
-        domains=source2
+    domains=[]
+    error=False
+    if source1:
+        domains =+ source1
+    else:
+        error=True
+    if source2:
+        domains =+ source2
+    else:
+        error=True
+    if error:
         logger.warning('[*] One source responded badly: Reverse ip lookup may be inaccurate')
     domains = util.remove_duplicates(domains)
     domains = util.sort(domains)
