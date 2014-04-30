@@ -42,8 +42,8 @@ def get_ip(value):
     except:
         return False
     
-def get_reversed_hosts(value):
-    domains = source.get_reverse_from_yougetsignal(value) + source.get_reverse_from_logontube(value)
+def get_reversed_hosts(value, extensive):
+    domains = source.get_reverse_from_yougetsignal(value, extensive) + source.get_reverse_from_logontube(value, extensive)
     domains = util.remove_duplicates(domains)
     domains = util.sort(domains)
     return domains
