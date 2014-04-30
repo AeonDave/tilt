@@ -15,5 +15,5 @@ ISSUES_PAGE = ""
 GIT_REPOSITORY = "git://github.com/AeonDave/tilt.git"
 
 PLATFORM = os.name
-ROOTDIR = os.getcwd()
+ROOTDIR = sys.path[0]
 PYVERSION = sys.version.split()[0]
