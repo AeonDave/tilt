@@ -23,7 +23,7 @@ def get_json_from_url(value):
         logger.error(msg)
         sys.exit(2)
 
-def get_reverse_from_yougetsignal(value):
+def get_reverse_from_yougetsignal(value, extensive):
     url = 'http://domains.yougetsignal.com/domains.php?remoteAddress=' + value
     data = get_json_from_url(url)
     domain = (data['domainArray'])
@@ -36,13 +36,15 @@ def get_reverse_from_yougetsignal(value):
             for site in value:
                 if site != '':
                     result = core.get_ip(site)
-                    if result==ip or result==None:
+                    if not extensive and result==ip or result==None:
+                        domains.append(site)
+                    elif extensive:
                         domains.append(site)
         return domains
     else:
         return False
     
-def get_reverse_from_logontube(value):  
+def get_reverse_from_logontube(value, extensive):  
     url = 'http://reverseip.logontube.com/?url=' + value + '&output=json'
     data = get_json_from_url(url)
     domain = (data['response']['domains'])
@@ -52,12 +54,11 @@ def get_reverse_from_logontube(value):
         for site in domain:
             if site != '':
                 result = core.get_ip(site)
-                if result==ip or result==None:
-                    domains.append(site)  
+                if not extensive and result==ip or result==None:
+                    domains.append(site)
+                elif extensive:
+                    domains.append(site)
         return domains
     else:
         return False
-    
-                
-                
-                
+        
