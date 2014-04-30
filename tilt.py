@@ -92,7 +92,5 @@ def main():
 
 if __name__ == '__main__':
     actions.header()
-    print sys.path[0]
-    print os.path
     main()
     sys.exit(0)
