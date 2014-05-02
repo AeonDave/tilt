@@ -86,6 +86,10 @@ or you just simply download the library and then
         python tilt.py -t google.com -e -r -o file.log
         python tilt.py -u
         
+## Screenshot
+
+![Screenshot](https://raw.githubusercontent.com/AeonDave/tilt/master/doc/screenshot/tilt.png)
+
 ## Contributing
 
 Feel free to contribute to this project, fork, submit and discuss!
