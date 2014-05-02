@@ -5,27 +5,13 @@ Copyright (c) 2014 tilt (https://github.com/AeonDave/tilt)
 See the file 'LICENSE' for copying permission
 """
 
-import sys, json, urllib2, core
+import sys, core
 from lib.logger import logger
-
-def get_json_from_url(value):
-    
-    req = urllib2.Request(value)
-    req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:28.0) Gecko/20100101 Firefox/28.0')
-    req.add_header('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')
-    req.add_header('Connection', 'keep-alive')
-    
-    try:
-        rawdata = json.load(urllib2.urlopen(req))
-        return rawdata
-    except urllib2.HTTPError, e:
-        msg = e.fp.read() 
-        logger.error(msg)
-        sys.exit(2)
+from bs4 import BeautifulSoup
 
 def get_reverse_from_yougetsignal(value, extensive):
     url = 'http://domains.yougetsignal.com/domains.php?remoteAddress=' + value
-    data = get_json_from_url(url)
+    data = core.get_json_from_url(url)
     status = (data['status'])
     domains=[]
     if status=='Success':
@@ -49,7 +35,7 @@ def get_reverse_from_yougetsignal(value, extensive):
     
 def get_reverse_from_logontube(value, extensive):  
     url = 'http://reverseip.logontube.com/?url=' + value + '&output=json'
-    data = get_json_from_url(url)
+    data = core.get_json_from_url(url)
     domain = (data['response']['domains'])
     domains=[]
     if not core.get_ip(value) == False:
@@ -63,4 +49,41 @@ def get_reverse_from_logontube(value, extensive):
                 elif extensive:
                     domains.append(site)
     return domains
+
+def get_from_who_is(value, type):
+    
+    whois='http://who.is/whois/'
+    info='http://who.is/website-information/'
+    dns='http://who.is/dns/'
+    
+    if type == 0:
+        url=whois
+    if type == 1:
+        url=info
+    if type == 2:
+        url=dns
         
+    rawdata = core.get_html_from_url(url+value)
+    parser = BeautifulSoup(rawdata)
+    blocks = parser.find_all('div','domain-data')
+    for block in blocks:
+        title = block.header.h5.get_text()
+        table = block.table
+        if table:
+            logger.info('-----'+title.strip()+'-----')
+            rows = table.find_all('tr')
+            for row in rows:
+                descriptions = row.find_all('th')
+                datas = row.find_all('td')
+                value=''
+                for description in descriptions:
+                    if description.get_text().strip():
+                        value = value + '-' + description.get_text().strip() 
+                if value:
+                    logger.info(value)
+                value=''
+                for data in datas:
+                    if data.get_text().strip():
+                        value = value + ' ' + data.get_text().strip()
+                if value:
+                    logger.info(value) 

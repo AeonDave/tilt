@@ -8,6 +8,7 @@ See the file 'LICENSE' for copying permission
 import sys, os, core, settings, util
 
 from lib.logger import logger
+from lib.settings import GEOIPFILE
 
 __version__ = settings.VERSION
 __author__ = settings.AUTHOR
@@ -45,9 +46,11 @@ def showhelp():
         python tilt.py -u
     """     
 
-def host_inspect(target):
+def host_inspect(target, extensive):
     
     if core.is_valid_ip(target):
+        msg = "Ip Validation OK"
+        logger.debug(msg)
         msg = "[+] Valid ip"
         logger.info(msg)
         msg = "[*] Performing hostname conversion"
@@ -60,6 +63,8 @@ def host_inspect(target):
             logger.error(msg)
                 
     elif core.is_valid_hostname(target):
+        msg = "Host Validation OK"
+        logger.debug(msg)
         msg = "[+] Valid host"
         logger.info(msg)
         msg = "[*] Performing ip conversion"
@@ -70,47 +75,44 @@ def host_inspect(target):
         except:
             msg = "[-] ERROR: Cannot resolve hostname"
             logger.error(msg)
-        
+            
     else:
         msg =  "[-] ERROR: You must provide a valid target. Given: "+ target
         showhelp()
         logger.error(msg)
-        sys.exit(1) 
-        
+        sys.exit(1)
     
-def host_extensive_inspect(target):
-    if core.is_valid_ip(target):
-        msg = "[+] Valid ip"
+    db = GEOIPFILE
+    geo = core.ip_to_country(core.get_ip(target), db)
+    if geo:
+        msg = "[+] The host is situated in "+geo
         logger.info(msg)
-        msg = "[*] Performing hostname conversion"
-        logger.info(msg)
-        try:
-            value = core.get_host_by_ip(target)
-            util.list_to_string(value)
-        except:
-            msg = "[-] ERROR: Cannot resolve hostname"
-            logger.error(msg)
-                
-    elif core.is_valid_hostname(target):
-        msg = "[+] Valid host"
-        logger.info(msg)
-        msg = "[*] Performing ip conversion"
-        logger.info(msg)
-        try:
-            value = core.get_host_by_name(target)
-            util.list_to_string(value)
-        except:
-            msg = "[-] ERROR: Cannot resolve hostname"
-            logger.error(msg)
     else:
-        msg = "[-] ERROR: You must provide a valid target. Given: "+target
-        logger.error(msg)
-        showhelp()
-        sys.exit(1) 
+        msg = "[-] Cannot geolocalize the host"
+        logger.warning(msg)
+    
+    if extensive:
+        msg = "Extensive probing"
+        logger.debug(msg)
+        
+        if core.is_valid_hostname(target):
+            msg = "Extensive information probing"
+            logger.debug(msg)
+            msg = "[*] Starting extensive information gathering"
+            logger.info(msg)
+
+            whois = core.get_extensive_data(target, 0)
+
+            info = core.get_extensive_data(target, 1)
+
+            dns = core.get_extensive_data(target, 2)
+        else:
+            msg = "[-] Not an hostame: working on"
+            logger.warning(msg) 
 
 def reverse(target, extensive):
-    msg = "[*] Performing reverse ip lookup"
-    logger.info(msg)
+    msg = "Reverse probing"
+    logger.debug(msg)
     hosts = core.get_reversed_hosts(target, extensive)
     if len(hosts)>0:
         if len(hosts)==1:
@@ -129,5 +131,7 @@ def reverse(target, extensive):
             
         
 def search(value):
-        msg = "[-] Not Implemented Yet"
-        logger.error(msg)
+    msg = "Search probing"
+    logger.debug(msg)
+    msg = "[-] Not Implemented Yet"
+    logger.error(msg)

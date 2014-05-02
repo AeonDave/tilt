@@ -5,7 +5,7 @@ Copyright (c) 2014 tilt (https://github.com/AeonDave/tilt)
 See the file 'LICENSE' for copying permission
 """
 
-import socket, re, source, util
+import socket, re, json, urllib2, source, util, geoip
 from lib.logger import logger
 
 def is_valid_ip(ip):
@@ -51,11 +51,11 @@ def get_reversed_hosts(value, extensive):
     domains=[]
     error=False
     if source1:
-        domains =+ source1
+        domains = domains + source1
     else:
         error=True
     if source2:
-        domains =+ source2
+        domains = domains + source2
     else:
         error=True
     if error:
@@ -63,3 +63,40 @@ def get_reversed_hosts(value, extensive):
     domains = util.remove_duplicates(domains)
     domains = util.sort(domains)
     return domains
+
+def get_json_from_url(value):
+    
+    req = urllib2.Request(value)
+    req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:28.0) Gecko/20100101 Firefox/28.0')
+    req.add_header('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')
+    req.add_header('Connection', 'keep-alive')
+    
+    try:
+        rawdata = json.load(urllib2.urlopen(req))
+        return rawdata
+    except urllib2.HTTPError, e:
+        msg = e.fp.read() 
+        logger.error(msg)
+        sys.exit(2)
+
+def get_html_from_url(value):
+    
+    req = urllib2.Request(value)
+    req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:28.0) Gecko/20100101 Firefox/28.0')
+    req.add_header('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')
+    req.add_header('Connection', 'keep-alive')
+    
+    try:
+        rawdata = urllib2.urlopen(req)
+        return rawdata.read()
+    except urllib2.HTTPError, e:
+        msg = e.fp.read() 
+        logger.error(msg)
+        sys.exit(2)
+
+def ip_to_country(value, db):
+    return geoip.country(value, db)
+
+def get_extensive_data(value, type):
+    data = source.get_from_who_is(value, type)
+    return data

@@ -64,29 +64,38 @@ if google and reverse:
     sys.exit(1) 
 
 def main():
-    if not output==None:     
+    if output:     
         handler = logging.FileHandler(output)
         handler.setLevel(logging.INFO)
         logger.addHandler(handler)
     logger.info('-----Start-----')
+    
     if not target==None:
         if extensive:
-            logger.info('[*] Extensive ip lookup on '+target)
-            actions.host_extensive_inspect(target)
+            logger.info('[*] Starting extensive ip lookup on '+target)
         else:
-            logger.info('[*] Ip lookup on '+target)
-            actions.host_inspect(target)
+            logger.info('[*] Starting ip lookup on '+target)
+        actions.host_inspect(target, extensive)
+        logger.info('[*] Ip Lookup completed')
+        
     if reverse and not extensive:
-        logger.info('[*] Reverse ip lookup on '+target)
+        logger.info('[*] Starting reverse ip lookup on '+target)
         actions.reverse(target, False)
+        logger.info('[*] Reverse ip lookup completed')
         
     if reverse and extensive:
-        logger.info('[*] Extensive reverse ip lookup on '+target)
+        logger.info('[*] Starting Extensive reverse ip lookup on '+target)
         logger.warning('[*] This feature shows all domains pointing on same server but with different ip')
         actions.reverse(target, True)
+        logger.info('[*] Extensive reverse ip lookup completed')
+        
     if google:
-        logger.info('[*] Search on '+target)
+        logger.info('[*] Starting search on '+target)
         actions.search(target)
+        logger.info('[*] Search completed')
+        
+    if output: 
+        logger.info('[+] File log written: ' + output)
     logger.info('-----End-----\n')
 # Program
 
