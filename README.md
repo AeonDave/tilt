@@ -86,6 +86,6 @@ or you just simply download the library and then
         
 ## Contributing
 
-	Feel free to contribute to this project, fork, submit and discuss!
+Feel free to contribute to this project, fork, submit and discuss!
 
 Follow the project on: https://github.com/AeonDave/tilt
