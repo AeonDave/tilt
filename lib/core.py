@@ -5,7 +5,7 @@ Copyright (c) 2014 tilt (https://github.com/AeonDave/tilt)
 See the file 'LICENSE' for copying permission
 """
 
-import socket, re, json, urllib2, source, util, geoip
+import socket, sys, re, json, urllib2, source, util, geoip
 from lib.logger import logger
 
 def is_valid_ip(ip):
@@ -74,10 +74,8 @@ def get_json_from_url(value):
     try:
         rawdata = json.load(urllib2.urlopen(req))
         return rawdata
-    except urllib2.HTTPError, e:
-        msg = e.fp.read() 
-        logger.error(msg)
-        sys.exit(2)
+    except:
+        logger.error('[-] Error: Invalid host given')
 
 def get_html_from_url(value):
     
@@ -89,10 +87,8 @@ def get_html_from_url(value):
     try:
         rawdata = urllib2.urlopen(req)
         return rawdata.read()
-    except urllib2.HTTPError, e:
-        msg = e.fp.read() 
-        logger.error(msg)
-        sys.exit(2)
+    except:
+        logger.error('[-] Error: Invalid host given')
 
 def ip_to_country(value, db):
     return geoip.country(value, db)

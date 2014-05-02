@@ -64,26 +64,29 @@ def get_from_who_is(value, type):
         url=dns
         
     rawdata = core.get_html_from_url(url+value)
-    parser = BeautifulSoup(rawdata)
-    blocks = parser.find_all('div','domain-data')
-    for block in blocks:
-        title = block.header.h5.get_text()
-        table = block.table
-        if table:
-            logger.info('-----'+title.strip()+'-----')
-            rows = table.find_all('tr')
-            for row in rows:
-                descriptions = row.find_all('th')
-                datas = row.find_all('td')
-                value=''
-                for description in descriptions:
-                    if description.get_text().strip():
-                        value = value + '-' + description.get_text().strip() 
-                if value:
-                    logger.info(value)
-                value=''
-                for data in datas:
-                    if data.get_text().strip():
-                        value = value + ' ' + data.get_text().strip()
-                if value:
-                    logger.info(value) 
+    if rawdata:
+        parser = BeautifulSoup(rawdata)
+        blocks = parser.find_all('div','domain-data')
+        for block in blocks:
+            title = block.header.h5.get_text()
+            table = block.table
+            if table:
+                logger.info('-----'+title.strip()+'-----')
+                rows = table.find_all('tr')
+                for row in rows:
+                    descriptions = row.find_all('th')
+                    datas = row.find_all('td')
+                    value=''
+                    for description in descriptions:
+                        if description.get_text().strip():
+                            value = value + '-' + description.get_text().strip() 
+                    if value:
+                        logger.info(value)
+                    value=''
+                    for data in datas:
+                        if data.get_text().strip():
+                            value = value + ' ' + data.get_text().strip()
+                    if value:
+                        logger.info(value) 
+    else:
+        logger.error('[-] Error: Invalid host given for extensive data')

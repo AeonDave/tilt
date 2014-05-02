@@ -95,20 +95,15 @@ def host_inspect(target, extensive):
         msg = "Extensive probing"
         logger.debug(msg)
         
-        if core.is_valid_hostname(target):
-            msg = "Extensive information probing"
-            logger.debug(msg)
-            msg = "[*] Starting extensive information gathering"
-            logger.info(msg)
+        msg = "[*] Starting extensive information gathering"
+        logger.info(msg)
 
-            whois = core.get_extensive_data(target, 0)
+        whois = core.get_extensive_data(target, 0)
 
-            info = core.get_extensive_data(target, 1)
+        info = core.get_extensive_data(target, 1)
 
-            dns = core.get_extensive_data(target, 2)
-        else:
-            msg = "[-] Not an hostame: working on"
-            logger.warning(msg) 
+        dns = core.get_extensive_data(target, 2)
+
 
 def reverse(target, extensive):
     msg = "Reverse probing"
