@@ -7,7 +7,7 @@ See the file 'LICENSE' for copying permission
 
 import os ,sys 
 
-VERSION = "0.6. beta"
+VERSION = "0.6 beta"
 AUTHOR = "AeonDave"
 DESCRIPTION = "Automatic ip lookup and reverse probing tool for passive reconnaissance"
 SITE = "https://github.com/AeonDave/tilt.git"
