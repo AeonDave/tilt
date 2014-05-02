@@ -70,7 +70,7 @@ def main():
         logger.addHandler(handler)
     logger.info('-----Start-----')
     
-    if not target==None:
+    if target:
         if extensive:
             logger.info('[*] Starting extensive ip lookup on '+target)
         else:
