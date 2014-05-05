@@ -50,6 +50,8 @@ You can download the latest version by cloning Tilt from the Git repository:
 	
 ## Dependencies
 
+Python 2.7.3 of course
+
 With 0.6 version i decided to introduce a library needed to parse html... so you have to install BeautyfulSoup library (http://www.crummy.com/software/BeautifulSoup/).
 But don't worry! It's easy!
 
