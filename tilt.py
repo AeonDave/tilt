@@ -10,7 +10,7 @@ import sys, getopt, logging
 from lib import update
 from lib import actions
 from lib.logger import logger
-     
+from lib.settings import GEOIPFILE  
 # Tilt Setup
 
 try:
