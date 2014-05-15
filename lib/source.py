@@ -28,7 +28,8 @@ def get_reverse_from_yougetsignal(value, extensive):
                             if result==ip or result==None:
                                 domains.append(site)
                         elif extensive:
-                            domains.append(site)
+                            result = core.get_ip(site)
+                            domains.append(site + " " + result)
         return domains
     else:
         return False
@@ -47,7 +48,8 @@ def get_reverse_from_logontube(value, extensive):
                     if result==ip or result==None:
                         domains.append(site)
                 elif extensive:
-                    domains.append(site)
+                    result = core.get_ip(site)
+                    domains.append(site + " " + result)
     return domains
 
 def get_from_who_is(value, type):
